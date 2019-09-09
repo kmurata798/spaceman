@@ -38,7 +38,11 @@ def is_word_guessed(secret_word, letters_guessed):
         else:
             return False
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
-    pass
+    
+"""def check(secret_word, letters_guessed, guess):
+    status = ''
+    for letter in secret_word:
+            letters_guessed.append("_")"""
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -53,12 +57,13 @@ def get_guessed_word(secret_word, letters_guessed):
     '''
 
     for index in range(len(secret_word)):  
-        letters_guessed.append("_") 
         if letters_guessed[index] == secret_word[index]:
             letters_guessed[index].append(secret_word[index])
             return ''.join(str(e) for e in letters_guessed)
         else:
             letters_guessed[index] = "_"
+            return ''.join(str(e) for e in letters_guessed)
+
 #loop through secret_word list and compare with letters_guessed list to see whether they are the same.
 #If so, change the index in the underscored_word the same value as the 
 
@@ -120,16 +125,21 @@ def spaceman(secret_word):
     
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
     
-    count = 7
+    attempts = 7
     retry = True
     for blank in range(len(letters_guessed)):
-        letters_guessed[blank] = "_"
+        letters_guessed.append("_")
     print(secret_word)
     print(letters_guessed)
     while retry:
             
         guess = input("-----------------\nEnter your guess: ")
-        
+        guess = guess.lower()
+        for guess in secret_word:
+            if guess in letters_guessed:
+                guess = input("Sorry, please enter ONE LETTER!")
+            else:
+                get_guessed_word(secret_word, letters_guessed)
         #get_guessed_word(secret_word, letters_guessed)
 
         #sis_guess_in_word(guess, secret_word)
@@ -149,7 +159,7 @@ def spaceman(secret_word):
                 retry = False
             else:   
                 count = count - 1
-                print (f"\nSorry your guess was not in the word, try again.\nYou have {count} incorrect guesses left!\nGuessed word so far: " + ''.join(str(i) for i in letters_guessed) + "\n")
+                print (f"\nSorry your guess was not in the word, try again.\nYou have {attempts} incorrect guesses left!\nGuessed word so far: " + ''.join(str(i) for i in letters_guessed) + "\n")
                 print("These letters haven't been guessed yet: " + ''.join(str(e) for e in word_bank) + "\n")
                 retry = True
 
