@@ -32,11 +32,10 @@ def is_word_guessed(secret_word, letters_guessed):
         bool: True only if all the letters of secret_word are in letters_guessed, False otherwise
     '''
 #Loop through secret_word list and compare with letters_guessed list to see whether they are the same
-    for index in range(len(secret_word)):
-        if letters_guessed[index] == secret_word[index]:
-            return True
-        else:
+    for letter in secret_word:
+        if letter not in letters_guessed:
             return False
+    return True
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
     
 """def check(secret_word, letters_guessed, guess):
@@ -55,14 +54,34 @@ def get_guessed_word(secret_word, letters_guessed):
     Returns: 
         string: letters and underscores.  For letters in the word that the user has guessed correctly, the string should contain the letter at the correct position.  For letters in the word that the user has not yet guessed, shown an _ (underscore) instead.
     '''
-
-    for index in range(len(secret_word)):  
-        if letters_guessed[index] == secret_word[index]:
-            letters_guessed[index].append(secret_word[index])
-            return ''.join(str(e) for e in letters_guessed)
+    letters_guess_so_far = []
+    for letter in secret_word:
+        if letter in letters_guessed:
+            letters_guess_so_far.append(letter)
         else:
-            letters_guessed[index] = "_"
-            return ''.join(str(e) for e in letters_guessed)
+            letters_guess_so_far.append("_")
+    return letters_guess_so_far
+
+    """status = ""
+    guess = guess.lower()
+    matches = 0
+    for letter in secret_word:  
+        if letter in letters_guessed:
+            status += letter
+        else:
+            status += "_"
+
+    if letter == guess:
+        matches += 1
+
+    if matches > 1:
+        print("Yes! The word contains , matches, " + guess + "" + "s")
+    elif matches == 1:
+        print("Yes! The word contains the letter " + guess + "")
+    else:
+        print("Sorry. The word does not contain the letter " + guess + "")
+
+        return status"""
 
 #loop through secret_word list and compare with letters_guessed list to see whether they are the same.
 #If so, change the index in the underscored_word the same value as the 
@@ -85,8 +104,8 @@ def is_guess_in_word(guess, secret_word):
 
 #loop through secret_word list and compare whether the input letter matches any of the letters in the secret_word list
 
-    for index in range(len(secret_word)):
-        if secret_word[index] == guess:
+    for index in secret_word:
+        if index == guess:
             return True
     return False
 
@@ -96,19 +115,25 @@ def is_guess_in_word(guess, secret_word):
 def play_again():
         ans = input("Would you like to play again?: (Y = yes / N = no): ")
         if ans == 'Y' or ans == 'y':
-            print("Again!? OoooOKAY!\n\n")
+            print("\n\nAgain!? OoooOKAY!\n\n")
             return True
-        if ans == 'N' or ans == 'n':
+        elif ans == 'N' or ans == 'n':
             print("Hope you had FUN! Bye!")
             return False
+        else:
+            print("Please enter either: (Y or N)")
 
-def valid(guess):
+"""def valid(guess):
     if guess.isalpha() == False:
         print("Sorry, please enter ONE LETTER!")
         return False
     else:
-        return True
+        return True"""
 
+def same_input(guess, letters_chosen):
+    for letter in letters_chosen:
+        if guess == letter:
+            return True
 
 
 def spaceman(secret_word):
@@ -127,46 +152,45 @@ def spaceman(secret_word):
     
     attempts = 7
     retry = True
-    for blank in range(len(letters_guessed)):
-        letters_guessed.append("_")
+    letters_chosen = [] # letters picked already
     print(secret_word)
     print(letters_guessed)
     while retry:
             
         guess = input("-----------------\nEnter your guess: ")
-        guess = guess.lower()
-        for guess in secret_word:
-            if guess in letters_guessed:
-                guess = input("Sorry, please enter ONE LETTER!")
-            else:
-                get_guessed_word(secret_word, letters_guessed)
-        #get_guessed_word(secret_word, letters_guessed)
 
+        if len(guess) != 1:
+            print("Please type ONE letter!")
+
+        elif same_input(guess, letters_chosen) == True:
+            print("You have ALREADY GUESSED that word!")
+            letters_chosen.append(guess)
         #sis_guess_in_word(guess, secret_word)
-        if is_guess_in_word(guess, secret_word) == True:
-            print("Your guess appears in the word!\nGuessed word so far: " + ''.join(str(e) for e in letters_guessed))
+        elif is_guess_in_word(guess, secret_word) == True:
+            letters_chosen.append(guess)
+            print("Your guess appears in the word!\nGuessed word so far: ")
+            print(''.join(get_guessed_word(secret_word, letters_chosen)))
+                #TODO: Check if the guessed letter is in the secret or not and give the player feedback
                 #TODO: show the guessed word so far
-            for index in range(len(word_bank)):
-                if word_bank[index] == guess:
-                    word_bank[index] = ""
+            if is_word_guessed(secret_word, letters_chosen):
+                print(f"\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nThe word was {secret_word}!\nYOU WIN!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+                break
+        #Determine if game is won
+
             print("These letters haven't been guessed yet: " + ''.join(str(e) for e in word_bank))
             retry = True
-                #TODO: Check if the guessed letter is in the secret or not and give the player feedback
 
         else:
-            if count == 0:
-                print("OH NO! You ran out of attempts!")
+            if attempts == 0:
+                print("\n\n^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\nOH NO! You ran out of attempts!\n\n ___[-GAME OVER-]___\n^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n")
+                
                 retry = False
             else:   
-                count = count - 1
-                print (f"\nSorry your guess was not in the word, try again.\nYou have {attempts} incorrect guesses left!\nGuessed word so far: " + ''.join(str(i) for i in letters_guessed) + "\n")
+                attempts = attempts - 1
+                print (f"\nSorry your guess was not in the word, try again.\nYou have {attempts + 1} incorrect guesses left!\nGuessed word so far: ")
+                print(''.join(get_guessed_word(secret_word, letters_chosen)))
                 print("These letters haven't been guessed yet: " + ''.join(str(e) for e in word_bank) + "\n")
                 retry = True
-
-    if is_word_guessed(secret_word, letters_guessed) == True:
-        print("YOU WON!")
-    else:
-        print("YOU LOST")
     
 
         
