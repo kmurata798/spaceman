@@ -1,7 +1,8 @@
 import random
-
+#Secret Word list
 secret_word = list()
 
+#generate a random word
 def load_word():
     '''
     A function that reads a text file of words and randomly selects one to use as the secret word
@@ -17,6 +18,7 @@ def load_word():
     words_list = words_list[0].split(' ')
     secret_word = random.choice(words_list)
     return secret_word
+
 
 def is_word_guessed(secret_word, letters_guessed):
     '''
@@ -57,7 +59,7 @@ def get_guessed_word(secret_word, letters_guessed):
     return letters_guess_so_far
 
 #loop through secret_word list and compare with letters_guessed list to see whether they are the same.
-#If so, change the index in the underscored_word the same value as the 
+#If so, change the index in secret_word to the same value as the 
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
 
@@ -83,21 +85,16 @@ def is_guess_in_word(guess, secret_word):
     #TODO: check if the letter guess is in the secret word
 
 def play_again():
-    ans = input("Would you like to play again?: ( Y = yes )( N = no ): ")
-    if ans == 'Y' or ans == 'y':
-        print("\n\nAgain!? OoooOKAY!\n\n")
-        return True
-    elif ans == 'N' or ans == 'n':
-        print("Hope you had FUN! Bye!")
-        return False
-    else:
-        print("Please enter either: ( Y or N )")
-
-"""def same_input(guess, letters_chosen):
-    for letter in letters_chosen:
-        if guess == letter:
+    while True: 
+        ans = input("Would you like to play again?: ( Y = yes )( N = no ): ")
+        if ans == 'Y' or ans == 'y':
+            print("\n\nAgain!? OoooOKAY!\n\n")
             return True
-    return False"""
+        elif ans == 'N' or ans == 'n':
+            print("Hope you had FUN! Bye!")
+            return False
+        else:
+            print("Please enter either: ( Y or N )")
 
 def spaceman(secret_word):
     '''
@@ -110,27 +107,28 @@ def spaceman(secret_word):
     print("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\nWelcome to Spaceman!\nYou have 7 incorrect guesses, please enter one letter per round!")
     #TODO: show the player information about the game according to the project spec
     
-    attempts = 7
+    attempts = 6
     retry = True
     letters_guessed = [] # letters correct
-    word_bank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-    print(secret_word)
+    word_bank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] #letters not guessed yet
     while retry:
             
-        guess = input("-----------------\nEnter your guess: ")
+        guess = input("-----------------\nEnter your guess: ") 
+        #User's input
 
         if len(guess) != 1:
             print("\nPlease type ONE letter!")
-                #TODO: Ask the player to guess one letter per round and check that it is only one letter
+        #TODO: Ask the player to guess one letter per round and check that it is only one letter
 
         if guess not in word_bank:
             print("\nYou have already used this letter")
             print(''.join(get_guessed_word(secret_word, letters_guessed)))
             continue
+        #check if user's input is a duplicate
 
         if guess in word_bank:
             word_bank.remove(guess)
-        #sis_guess_in_word(guess, secret_word)
+        #whenever the user guesses a letter, take the letter off the wordbank
 
         if is_guess_in_word(guess, secret_word) == True:
             letters_guessed.append(guess)
@@ -141,29 +139,31 @@ def spaceman(secret_word):
             if is_word_guessed(secret_word, letters_guessed):
                 print(f"\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nThe word was {secret_word}!\nYOU WIN!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
                 break
-        #Determine if game is won
+            #Determine if game is won
 
             print("These letters haven't been guessed yet: " + ''.join(str(w) for w in word_bank))
-            #retry = True
 
         else:
             if attempts == 0:
-                print("\n\n^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\nOH NO! You ran out of attempts!\n\n ___[-GAME OVER-]___\n^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n")
+                print("\n\n^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n\nOH NO! You ran out of attempts!\n\n ___[-GAME OVER-]___\n\nhe word was: [ " + secret_word + " ]\n\n^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n")
                 retry = False
+                #check if user has lost the game
             else:
                 attempts = attempts - 1
                 print (f"\nSorry your guess was not in the word, try again.\nYou have {attempts + 1} incorrect guesses left!\nGuessed word so far: ")
                 print(''.join(get_guessed_word(secret_word, letters_guessed)))
                 print("These letters haven't been guessed yet: " + ''.join(str(e) for e in word_bank) + "\n")
-                #retry = True
+                #If the user inputs a wrong guess
     
-    #TODO: check if the game has been won or lost
+            #TODO: check if the game has been won or lost
 
 
 running = True
 while running:
     spaceman(load_word())
     running = play_again() 
+
+#loop the game until play again == False
 
 
 
