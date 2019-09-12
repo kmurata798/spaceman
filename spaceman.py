@@ -104,7 +104,7 @@ def spaceman(secret_word):
       secret_word (string): the secret word to guess.
 
     '''
-    print("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\nWelcome to Spaceman!\nYou have 7 incorrect guesses, please enter one letter per round!")
+    print("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =  \nWelcome to Spaceman!\nYou have 7 incorrect guesses, please enter one letter per round!")
     #TODO: show the player information about the game according to the project spec
     
     attempts = 6
@@ -173,4 +173,4 @@ while running:
 #secret_word = load_word()
 #spaceman(load_word())
 
-#print(load_word())
+#print(load_word()) 
