@@ -1,4 +1,4 @@
-from spaceman import *
+from spaceman import is_word_guessed, get_guessed_word, is_guess_in_word
 
 # Tests different inputs/outputs for is_word_guessed function
 
