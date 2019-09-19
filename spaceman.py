@@ -85,7 +85,7 @@ def is_guess_in_word(guess, secret_word):
             return True
     return False
 
-    # TODO: check if the letter guess is in the secret word
+    # check if the letter guess is in the secret word
 
 
 def play_again():
@@ -170,10 +170,10 @@ def spaceman(secret_word):
 
 
 if __name__ == '__main__':
-running = True
-while running:
-    spaceman(load_word())
-    running = play_again()
+    running = True
+    while running:
+        spaceman(load_word())
+        running = play_again()
 
 # loop the game until play again == False
 
